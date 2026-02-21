@@ -12,12 +12,23 @@ export const getJobsList = async () => {
   return response.json();
 };
 
+
 export const applyToJob = async (payload) => {
   const response = await fetch(`${BASE_URL}/api/candidate/apply-to-job`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  if (!response.ok) throw new Error('Error en la postulación');
-  return response.json();
+
+  
+  
+  const data = await response.json();
+
+  if (!response.ok) {
+   
+    throw new Error(data.message || data.error || 'Error en la postulación');
+  }
+
+  return data;
+
 };

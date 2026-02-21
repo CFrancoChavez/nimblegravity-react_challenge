@@ -27,23 +27,25 @@ function App() {
   }, []);
 
   const handleApply = async (jobId, repoUrl) => {
-    // Step 5: Enviar postulación
-    const payload = {
+    
+     const payload = {
       uuid: candidate.uuid,
-      jobId: jobId,
       candidateId: candidate.candidateId,
-      repoUrl: repoUrl
+      applicationId: candidate.applicationId, 
+      jobId: String(jobId),
+      repoUrl: repoUrl.trim()
     };
-
+    console.log("Enviando este Payload:", payload);
+    
     try {
       const result = await applyToJob(payload);
-      if (result.ok) {
-        alert("¡Postulación enviada con éxito!");
-      } else {
-        alert("Hubo un problema con la postulación.");
-      }
+      
+      alert("¡Postulación enviada con éxito!");
+      //console.log("Respuesta servidor:", result);
     } catch (error) {
-      alert("Hubo un error al postularse");
+      // Aquí capturamos el mensaje descriptivo que pide el mail
+      //console.error("Error detallado:", error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
