@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { getCandidateByEmail, getJobsList, applyToJob } from './services/api';
+import JobList from './components/JobList';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [candidate, setCandidate] = useState(null);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Step 2: Datos de candidato
+        const candidateData = await getCandidateByEmail('franco.chvez@gmail.com');
+        // Step 3: Lista de posiciones
+        const jobsData = await getJobsList();
+        
+        setCandidate(candidateData);
+        setJobs(jobsData);
+      } catch (error) {
+        console.error("Error inicializando app:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleApply = async (jobId, repoUrl) => {
+    // Step 5: Enviar postulación
+    const payload = {
+      uuid: candidate.uuid,
+      jobId: jobId,
+      candidateId: candidate.candidateId,
+      repoUrl: repoUrl
+    };
+
+    try {
+      const result = await applyToJob(payload);
+      if (result.ok) {
+        alert("¡Postulación enviada con éxito!");
+      } else {
+        alert("Hubo un problema con la postulación.");
+      }
+    } catch (error) {
+      alert("Hubo un error al postularse");
+    }
+  };
+
+  if (loading) return <div style={{ padding: '20px' }}>Cargando desafío...</div>;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <header style={{ borderBottom: '2px solid #eee', marginBottom: '20px', paddingBottom: '10px' }}>
+        <h1 style={{ marginBottom: '5px' }}>Open Positions</h1>
+        {candidate && (
+          <p style={{ color: '#666', margin: 0 }}>
+            Candidato: <strong>{candidate.firstName} {candidate.lastName}</strong>
+          </p>
+        )}
+      </header>
+
+      {/* Step 4: Mostrar listado */}
+      <JobList jobs={jobs} onApply={handleApply} />
+    </main>
+  );
 }
 
-export default App
+export default App;
