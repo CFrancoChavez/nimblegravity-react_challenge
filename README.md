@@ -1,16 +1,34 @@
-# React + Vite
+# Nimble Gravity - React Bot Filter Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a solution to the Junior Fullstack Developer challenge. The application is built with **React** and integrates with a secure API to manage candidate registration, job listings, and job applications.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Candidate Identification**: Fetches candidate metadata using email as a unique identifier.
+- **Job Board**: Dynamically renders a list of open positions retrieved from the API.
+- **Smart Application System**: Includes a custom validation layer to handle job applications with real-time feedback.
+- **Responsive Design**: A clean, professional grid-based UI designed for optimal readability.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React.js (Vite)
+- **Styling**: CSS3 (Modern Flexbox/Grid)
+- **API Communication**: Fetch API with async/await patterns.
 
-## Expanding the ESLint configuration
+## 🧠 Problem Solving & Implementation Notes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+One of the core objectives of this "bot filter" challenge was to demonstrate technical analysis and error handling. During development, I identified the following:
+
+1. **API Schema Discrepancy**: While the initial instructions suggested a 4-field payload for the POST request, the API's strict validation required the `applicationId` (obtained in Step 2) to prevent a "400 Bad Request".
+2. **Strict Field Mapping**: The system was configured to strictly map `jobId` from the job list to ensure compatibility with the backend's validation schema.
+3. **Error Handling**: Implemented a robust error-capturing mechanism that reads the response body to provide descriptive feedback, as suggested in the challenge tips.
+
+## ⚙️ Setup & Installation
+
+1. Clone the repository:
+   
+   git clone [https://github.com/CFrancoChavez/nimblegravity-react_challenge](https://github.com/CFrancoChavez/nimblegravity-react_challenge).
+2. Install dependencies
+   npm install
+3. Run the development server
+   npm run dev
